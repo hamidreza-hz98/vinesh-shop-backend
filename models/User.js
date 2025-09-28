@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const bcrypt = require("bcrypt");
 const timestamps = require("mongoose-timestamp");
 
 const UserSchema = new Schema({
@@ -39,7 +40,6 @@ const UserSchema = new Schema({
   cart: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "cart",
-    required: true,
   },
   wishlist: [
     {
@@ -108,8 +108,29 @@ const UserSchema = new Schema({
 
 UserSchema.plugin(timestamps);
 
-UserSchema.index({ phone: 1 }, { unique: true });
-UserSchema.index({ email: 1 }, { unique: true });
+UserSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+UserSchema.pre('findOneAndUpdate', async function(next) {
+  const update = this.getUpdate();
+
+  if (update.password) {
+    const salt = await bcrypt.genSalt(10);
+    update.password = await bcrypt.hash(update.password, salt);
+  }
+
+  next();
+});
+
+
+UserSchema.methods.comparePassword = async function(candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
 UserSchema.index({ firstName: 1, lastName: 1 });
 UserSchema.index({ birthdate: 1 });
 UserSchema.index({ cart: 1 });
