@@ -6,7 +6,6 @@ const CouponSchema = new Schema({
   code: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
   },
   name: {
@@ -29,7 +28,6 @@ const CouponSchema = new Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
-      required: true,
     },
   ],
   percentage: {

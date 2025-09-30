@@ -43,6 +43,18 @@ const TranslationSchema = new Schema({
       default: "$",
     },
   },
+  finalPrice: {
+    amount: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    currency: {
+      type: String,
+      required: true,
+      default: "$",
+    },
+  },
   slug: {
     type: String,
     required: true,

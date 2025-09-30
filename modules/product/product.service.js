@@ -209,6 +209,17 @@ const productService = {
 
     return product;
   },
+
+  async getByIds(productIds) {
+    const products = await Product.find({
+      _id: { $in: productIds },
+    })
+      .select("translations")
+      .populate("translations")
+      .lean();
+
+    return products;
+  },
 };
 
 module.exports = { productService };

@@ -85,13 +85,12 @@ const OrderSchema = new Schema({
       default: "$",
     },
   },
-  products: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
-      required: true,
-    },
-  ],
+  cart: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Cart",
+    required: true,
+  },
+
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -113,7 +112,7 @@ OrderSchema.index({ trackNumber: 1 }, { unique: true });
 OrderSchema.index({ user: 1 });
 OrderSchema.index({ status: 1 });
 OrderSchema.index({ transaction: 1 });
-OrderSchema.index({ products: 1 });
+OrderSchema.index({ cart: 1 });
 OrderSchema.index({ shipmentTrackNumber: 1 }, { sparse: true });
 OrderSchema.index({ "finalPrice.amount": 1 });
 OrderSchema.index({ shipmentDate: 1 });
