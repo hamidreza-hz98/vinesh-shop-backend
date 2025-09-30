@@ -30,7 +30,6 @@ const SizeSchema = new Schema({
 SizeSchema.plugin(timestamps);
 
 SizeSchema.index({ "translations.lang": 1, "translations.name": 1 });
-Size.find({ "translations.lang": "en", "translations.name": "Small" });
 SizeSchema.index({ "translations.name": "text" });
 SizeSchema.index({ "dimensions.width": 1 });
 SizeSchema.index({ "dimensions.height": 1 });

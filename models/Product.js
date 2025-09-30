@@ -95,7 +95,7 @@ const ProductSchema = new Schema({
   sizes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Color",
+      ref: "Size",
       default: [],
     },
   ],
@@ -155,6 +155,10 @@ const ProductSchema = new Schema({
   soldNumber: {
     type: Number,
     default: 0,
+  },
+  translations: {
+    type: [TranslationSchema],
+    required: true,
   },
 });
 

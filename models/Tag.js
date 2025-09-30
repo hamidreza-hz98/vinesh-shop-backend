@@ -24,7 +24,6 @@ const TagSchema = new Schema({
 TagSchema.plugin(timestamps);
 
 TagSchema.index({ "translations.lang": 1, "translations.name": 1 });
-Tag.find({ "translations.lang": "en", "translations.name": "Technology" });
 TagSchema.index({ "translations.name": "text" });
 
 module.exports = mongoose.model("Tag", TagSchema);
