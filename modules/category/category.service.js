@@ -87,25 +87,27 @@ const categoryService = {
   },
 
   async getDetails(filter, lang = null) {
-    
-    
     if (!filter || Object.keys(filter).length === 0) {
       throwError("Category does not exist.", 404);
     }
 
-    let category = await Category.findOne(filter)
-    .populate({
-      path: "tags",
-      select: "translations",
-    })
-    .populate({
+    let category = await Category.findOneAndUpdate(
+      filter,
+      { $inc: { visits: 1 } },
+      { new: true }
+    )
+      .populate({
+        path: "tags",
+        select: "translations",
+      })
+      .populate({
         path: "subCategories",
         select: "translations",
       })
       .populate({
         path: "image",
         select:
-        "filename originalName extension mimeType size path type translations",
+          "filename originalName extension mimeType size path type translations",
       })
       .populate({
         path: "icon",
@@ -116,10 +118,9 @@ const categoryService = {
         path: "banners",
         select:
           "filename originalName extension mimeType size path type translations",
-        })
-        .lean();
+      })
+      .lean();
 
-        console.log(await Category.findOne(filter));
     if (!category) {
       throwError("Category does not exist.", 404);
     }
@@ -176,9 +177,9 @@ const categoryService = {
       throwError("Category does not exist.", 404);
     }
 
-    const category = await Category.findByIdAndDelete(_id)
+    const category = await Category.findByIdAndDelete(_id);
 
-    return category
+    return category;
   },
 };
 

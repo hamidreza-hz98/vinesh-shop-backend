@@ -8,6 +8,7 @@ const tagRoutes = require("./tag/tag.routes");
 const sizeRoutes = require("./size/size.routes");
 const colorRoutes = require("./color/color.routes");
 const categoryRoutes = require("./category/category.routes");
+const brandRoutes = require("./brand/brand.routes");
 
 router.use("/user", userRoutes);
 router.use("/admin", adminRoutes);
@@ -16,5 +17,6 @@ router.use("/tag", tagRoutes);
 router.use("/size", sizeRoutes);
 router.use("/color", colorRoutes);
 router.use("/category", categoryRoutes);
+router.use("/brand", brandRoutes);
 
 module.exports = router;

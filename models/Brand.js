@@ -16,7 +16,6 @@ const TranslationSchema = new Schema({
   slug: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
   },
   excerpt: {
@@ -37,7 +36,7 @@ const BrandSchema = new Schema({
   image: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Media",
-    required: true,
+    default: null
   },
   tags: [
     {
@@ -73,7 +72,6 @@ const BrandSchema = new Schema({
 
 BrandSchema.plugin(timestamps);
 
-BrandSchema.index({ "translations.slug": 1 }, { unique: true, sparse: true });
 BrandSchema.index({ isActive: 1 });
 BrandSchema.index({ isFeatured: 1 });
 BrandSchema.index({ categories: 1 });
