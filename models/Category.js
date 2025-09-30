@@ -16,7 +16,6 @@ const TranslationSchema = new Schema({
   slug: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
   },
   excerpt: {
@@ -37,18 +36,18 @@ const CategorySchema = new Schema({
   image: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Media",
-    required: true,
+    default: null
   },
   icon: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Media",
-    required: true,
+    default: null
   },
   banners: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Media",
-      required: true,
+      default: null
     },
   ],
   subCategories: [
@@ -81,10 +80,7 @@ const CategorySchema = new Schema({
 
 CategorySchema.plugin(timestamps);
 
-CategorySchema.index(
-  { "translations.slug": 1 },
-  { unique: true, sparse: true }
-);
+
 CategorySchema.index(
   { isActive: 1 },
   { partialFilterExpression: { isActive: true } }

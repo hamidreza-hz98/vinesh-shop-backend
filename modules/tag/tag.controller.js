@@ -14,7 +14,7 @@ const tagController = {
     } catch (error) {
       res.error({
         message: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -33,7 +33,7 @@ const tagController = {
     } catch (error) {
       res.error({
         message: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -48,7 +48,7 @@ const tagController = {
     } catch (error) {
       res.error({
         message: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -66,7 +66,7 @@ const tagController = {
     } catch (error) {
       res.error({
         message: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },

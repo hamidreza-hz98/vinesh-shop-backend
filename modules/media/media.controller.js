@@ -10,7 +10,7 @@ const mediaController = {
         data: media,
       });
     } catch (error) {
-      res.error({ message: error.message, code: error.code });
+      res.error({ message: error.message, code: error.statusCode });
     }
   },
 
@@ -23,7 +23,7 @@ const mediaController = {
         data: media,
       });
     } catch (error) {
-      res.error({ message: error.message, code: error.code });
+      res.error({ message: error.message, code: error.statusCode });
     }
   },
 
@@ -33,7 +33,7 @@ const mediaController = {
 
       res.success({ data: media });
     } catch (error) {
-      res.error({ message: error.message, code: error.code });
+      res.error({ message: error.message, code: error.statusCode });
     }
   },
 
@@ -45,7 +45,7 @@ const mediaController = {
         data: { items, total, ...req.query },
       });
     } catch (error) {
-      res.error({ message: error.message, code: error.code });
+      res.error({ message: error.message, code: error.statusCode });
     }
   },
 
@@ -57,7 +57,7 @@ const mediaController = {
         message: `Media ${media.originalName} deleted successfully.`,
       });
     } catch (error) {
-      res.error({ message: error.message, code: error.code });
+      res.error({ message: error.message, code: error.statusCode });
     }
   },
 };

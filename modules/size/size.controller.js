@@ -14,7 +14,7 @@ const sizeController = {
     } catch (error) {
       res.error({
         messge: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -33,7 +33,7 @@ const sizeController = {
     } catch (error) {
       res.error({
         messge: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -48,7 +48,7 @@ const sizeController = {
     } catch (error) {
       res.error({
         messge: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -67,7 +67,7 @@ const sizeController = {
     } catch (error) {
       res.error({
         messge: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },

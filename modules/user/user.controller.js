@@ -13,7 +13,7 @@ const userController = {
     } catch (error) {
       res.error({
         message: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -32,7 +32,7 @@ const userController = {
     } catch (error) {
       res.error({
         message: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -53,7 +53,7 @@ const userController = {
     } catch (error) {
       res.error({
         message: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -70,7 +70,7 @@ const userController = {
     } catch (error) {
       res.error({
         message: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -87,7 +87,7 @@ const userController = {
     } catch (error) {
       res.error({
         message: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -105,7 +105,7 @@ const userController = {
     } catch (error) {
       res.error({
         message: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -123,7 +123,7 @@ const userController = {
     } catch (error) {
       res.error({
         message: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   },
@@ -140,7 +140,7 @@ const userController = {
     } catch (error) {
       res.error({
         message: error.message || "Something went wrong.",
-        code: error.code,
+        code: error.statusCode,
       });
     }
   }
