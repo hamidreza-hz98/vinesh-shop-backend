@@ -2,7 +2,6 @@ const express = require("express");
 const { categoryController } = require("./category.controller");
 const { categorySchema } = require("./category.validation");
 const validate = require("../../middlewares/validate");
-
 const router = express.Router();
 
 router.post("/", validate(categorySchema.create), categoryController.create);

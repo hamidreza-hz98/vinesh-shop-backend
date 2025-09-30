@@ -12,6 +12,10 @@ const TranslationSchema = new Schema({
     type: String,
     required: true,
   },
+  slug: {
+    type: String,
+    required: true,
+  },
 });
 
 const TagSchema = new Schema({

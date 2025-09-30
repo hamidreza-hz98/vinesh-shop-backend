@@ -19,7 +19,7 @@ const categoryService = {
       throwError("Category already exists.");
     }
 
-    const category = new Category(data);
+    const category = new Category({data});
     return await category.save();
   },
 

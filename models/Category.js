@@ -68,6 +68,10 @@ const CategorySchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isSubCategory: {
+    type: Boolean,
+    default: false
+  },
   visits: {
     type: Number,
     default: 0,

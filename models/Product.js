@@ -46,7 +46,6 @@ const TranslationSchema = new Schema({
   slug: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
   },
   excerpt: {
@@ -164,11 +163,12 @@ const ProductSchema = new Schema({
 
 ProductSchema.plugin(timestamps);
 
-ProductSchema.index({ "translations.slug": 1 }, { unique: true, sparse: true });
 ProductSchema.index({ isActive: 1 });
 ProductSchema.index({ isFeatured: 1 });
 ProductSchema.index({ isInCampaign: 1 });
-ProductSchema.index({ categories: 1, tags: 1, brand: 1 });
+ProductSchema.index({ categories: 1 });
+ProductSchema.index({ tags: 1 });
+ProductSchema.index({ brand: 1 });
 ProductSchema.index({
   "translations.name": "text",
   "translations.excerpt": "text",
