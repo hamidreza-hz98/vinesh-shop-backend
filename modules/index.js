@@ -12,6 +12,7 @@ const brandRoutes = require("./brand/brand.routes");
 const productRoutes = require("./product/product.routes");
 const cartRoutes = require("./cart/cart.routes");
 const couponRoutes = require("./coupon/coupon.routes");
+const addressRoutes = require("./address/address.routes");
 
 router.use("/user", userRoutes);
 router.use("/admin", adminRoutes);
@@ -24,5 +25,6 @@ router.use("/brand", brandRoutes);
 router.use("/product", productRoutes);
 router.use("/cart", cartRoutes);
 router.use("/coupon", couponRoutes);
+router.use("/address", addressRoutes);
 
 module.exports = router;

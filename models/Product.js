@@ -116,13 +116,6 @@ const ProductSchema = new Schema({
     required: true,
     default: 0,
   },
-  reviews: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Review",
-      default: [],
-    },
-  ],
   relatedProducts: [
     {
       type: mongoose.Schema.Types.ObjectId,

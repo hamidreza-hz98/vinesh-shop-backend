@@ -37,49 +37,10 @@ const UserSchema = new Schema({
   birthdate: {
     type: Date,
   },
-  cart: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "cart",
-  },
   wishlist: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
-      default: [],
-    },
-  ],
-  addresses: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Address",
-      default: [],
-    },
-  ],
-  orders: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Order",
-      default: [],
-    },
-  ],
-  transactions: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "transaction",
-      default: [],
-    },
-  ],
-  reviews: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "reviews",
-      default: [],
-    },
-  ],
-  discounts: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Coupon",
       default: [],
     },
   ],
@@ -133,7 +94,6 @@ UserSchema.methods.comparePassword = async function(candidatePassword) {
 
 UserSchema.index({ firstName: 1, lastName: 1 });
 UserSchema.index({ birthdate: 1 });
-UserSchema.index({ cart: 1 });
 UserSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.model("User", UserSchema);

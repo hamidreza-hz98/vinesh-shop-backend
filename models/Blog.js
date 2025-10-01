@@ -47,13 +47,6 @@ const BlogSchema = new Schema({
     ref: "Media",
     required: true,
   },
-  reviews: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Review",
-      default: [],
-    },
-  ],
   tags: [
     {
       type: mongoose.Schema.Types.ObjectId,
