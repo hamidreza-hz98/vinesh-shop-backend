@@ -1,5 +1,8 @@
 const { buildQuery } = require("../../lib/filter");
-const { filterMedia } = require("../../lib/general");
+const {
+  filterMedia,
+  calculateProductFinalPrice,
+} = require("../../lib/general");
 const throwError = require("../../middlewares/throw-error");
 const Product = require("../../models/Product");
 
@@ -220,6 +223,41 @@ const productService = {
 
     return products;
   },
+
+  async updateProductsInCampaign(products, isInCampaign, translations) {
+  for (const product of products) {
+    let prodDoc = product;
+
+    prodDoc = await Product.findById(product);
+    if (!prodDoc) continue;
+
+    prodDoc.translations = prodDoc.translations.map((tr) => {
+      const campaignTr = translations.find((t) => t.lang === tr.lang);
+
+      if (!isInCampaign) {
+        return {
+          ...(tr.toObject ? tr.toObject() : tr),
+          discount: { ...tr.discount, amount: 0 },
+          finalPrice: calculateProductFinalPrice(tr.price, { ...tr.discount, amount: 0 }),
+        };
+      }
+
+      if (campaignTr && campaignTr.discount) {
+        return {
+          ...(tr.toObject ? tr.toObject() : tr),
+          discount: campaignTr.discount,
+          finalPrice: calculateProductFinalPrice(tr.price, campaignTr.discount),
+        };
+      }
+
+      return tr;
+    });
+
+    prodDoc.isInCampaign = isInCampaign;
+
+    await prodDoc.save();
+  }
+}
 };
 
 module.exports = { productService };

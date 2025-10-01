@@ -21,6 +21,24 @@ const TranslationSchema = new Schema({
     type: String,
     default: "",
   },
+  discount: {
+    amount: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    type: {
+      type: String,
+      enum: ["percentage", "amount"],
+      required: true,
+      default: "percentage",
+    },
+    currency: {
+      type: String,
+      required: true,
+      default: "$",
+    },
+  },
   seo: {
     type: SeoSchema,
     default: () => ({}),
@@ -31,7 +49,7 @@ const CampaignSchema = new Schema({
   banner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Media",
-    required: true,
+    default: null
   },
   expiry: {
     type: Date,
@@ -48,6 +66,10 @@ const CampaignSchema = new Schema({
       default: [],
     },
   ],
+  visits: {
+    type: Number,
+    default: 0,
+  },
   translations: {
     type: [TranslationSchema],
     required: true,
