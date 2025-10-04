@@ -10,11 +10,9 @@ const TransactionSchema = new Schema({
   },
   trackingCode: {
     type: String,
-    required: true,
   },
   referrerBank: {
     type: String,
-    required: true,
   },
   price: {
     amount: {
@@ -42,6 +40,5 @@ TransactionSchema.index({ trackingCode: 1 }, { unique: true });
 TransactionSchema.index({ status: 1 });
 TransactionSchema.index({ createdAt: -1 });
 TransactionSchema.index({ user: 1, status: 1 });
-Transaction.find({ user: someUserId, status: "successful" });
 
 module.exports = mongoose.model("Transaction", TransactionSchema);
