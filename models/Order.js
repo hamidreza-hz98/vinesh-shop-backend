@@ -12,7 +12,7 @@ const OrderSchema = new Schema({
   trackNumber: {
     type: String,
     unique: true,
-    default: () => createOrderTrackNumber,
+    default: () => createOrderTrackNumber(),
   },
   status: {
     type: String,
@@ -35,53 +35,44 @@ const OrderSchema = new Schema({
   transaction: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Transaction",
-    required: true,
   },
   price: {
     amount: {
       type: Number,
-      required: true,
       default: 0,
     },
     currency: {
       type: String,
-      required: true,
       default: "$",
     },
   },
   discount: {
     amount: {
       type: Number,
-      required: true,
       default: 0,
     },
     currency: {
       type: String,
-      required: true,
       default: "$",
     },
   },
   shipmentPrice: {
     amount: {
       type: Number,
-      required: true,
       default: 0,
     },
     currency: {
       type: String,
-      required: true,
       default: "$",
     },
   },
   finalPrice: {
     amount: {
       type: Number,
-      required: true,
       default: 0,
     },
     currency: {
       type: String,
-      required: true,
       default: "$",
     },
   },
@@ -97,8 +88,8 @@ const OrderSchema = new Schema({
     required: true,
   },
   shipmentDate: {
-    type: date,
-    default: "",
+    type: Date,
+    default: null,
   },
   shipmentTrackNumber: {
     type: String,
@@ -108,7 +99,6 @@ const OrderSchema = new Schema({
 
 OrderSchema.plugin(timestamps);
 
-OrderSchema.index({ trackNumber: 1 }, { unique: true });
 OrderSchema.index({ user: 1 });
 OrderSchema.index({ status: 1 });
 OrderSchema.index({ transaction: 1 });
