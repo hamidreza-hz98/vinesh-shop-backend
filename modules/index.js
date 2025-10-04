@@ -15,6 +15,7 @@ const couponRoutes = require("./coupon/coupon.routes");
 const addressRoutes = require("./address/address.routes");
 const campaignRoutes = require("./campaign/campaign.routes");
 const transactionRoutes = require("./transaction/transaction.routes");
+const contactFormRoutes = require("./contact-form/contactForm.routes");
 
 router.use("/user", userRoutes);
 router.use("/admin", adminRoutes);
@@ -30,5 +31,6 @@ router.use("/coupon", couponRoutes);
 router.use("/address", addressRoutes);
 router.use("/campaign", campaignRoutes);
 router.use("/transaction", transactionRoutes);
+router.use("/contact-form", contactFormRoutes);
 
 module.exports = router;
