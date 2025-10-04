@@ -18,6 +18,7 @@ const transactionRoutes = require("./transaction/transaction.routes");
 const contactFormRoutes = require("./contact-form/contactForm.routes");
 const orderRoutes = require("./order/order.routes");
 const blogRoutes = require("./blog/blog.routes");
+const reviewRoutes = require("./review/review.routes");
 
 router.use("/user", userRoutes);
 router.use("/admin", adminRoutes);
@@ -36,5 +37,6 @@ router.use("/transaction", transactionRoutes);
 router.use("/contact-form", contactFormRoutes);
 router.use("/order", orderRoutes);
 router.use("/blog", blogRoutes);
+router.use("/review", reviewRoutes);
 
 module.exports = router;
