@@ -16,7 +16,6 @@ const TranslationSchema = new Schema({
   slug: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
   },
   excerpt: {
@@ -45,7 +44,7 @@ const BlogSchema = new Schema({
   image: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Media",
-    required: true,
+    // required: true,
   },
   tags: [
     {
@@ -103,18 +102,14 @@ const BlogSchema = new Schema({
 
 BlogSchema.plugin(timestamps);
 
-BlogSchema.index({ "translations.slug": 1 }, { unique: true, sparse: true });
 BlogSchema.index({ isFeatured: 1 });
 BlogSchema.index(
   { isPublished: 1 },
   { partialFilterExpression: { isPublished: true } }
 );
-BlogSchema.index({ categories: 1, tags: 1 });
 BlogSchema.index({
   "translations.title": "text",
   "translations.excerpt": "text",
 });
-BlogSchema.index({ "translations.slug": 1 }, { unique: true, sparse: true });
-BlogSchema.index({ "translations.lang": 1 });
 
 module.exports = mongoose.model("Blog", BlogSchema);
