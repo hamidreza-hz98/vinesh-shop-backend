@@ -3,13 +3,26 @@ const { userController } = require("./user.controller");
 const { userSchema } = require("./user.validation");
 const validate = require("../../middlewares/validate");
 
+const {
+  authenticate,
+  allowRoles,
+  requireUser,
+  allowUserOrAdmin,
+} = require("../../middlewares/auth");
+
 const router = express.Router();
 
-router.post("/", validate(userSchema.create), userController.create);
+router.post(
+  "/",
+  authenticate,
+  allowRoles("superadmin"),
+  validate(userSchema.create),
+  userController.create
+);
 
 router.get("/details", userController.getDetails);
 
-router.get("/all", userController.getAll);
+router.get("/all", authenticate, allowRoles("viewer"), userController.getAll);
 
 router.post("/signup", validate(userSchema.create), userController.signup);
 
@@ -21,8 +34,19 @@ router.post(
   userController.changePassword
 );
 
-router.delete("/:id", userController.delete);
+router.delete(
+  "/:id",
+  authenticate,
+  allowRoles("superadmin"),
+  userController.delete
+);
 
-router.post("/:id", validate(userSchema.update), userController.update);
+router.post(
+  "/:id",
+  authenticate,
+  allowRoles("superadmin", "user"),
+  validate(userSchema.update),
+  userController.update
+);
 
 module.exports = router;

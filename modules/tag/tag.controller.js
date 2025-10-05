@@ -3,7 +3,7 @@ const { tagService } = require("./tag.service");
 const tagController = {
   async create(req, res) {
     const data = req.body;
-
+    
     try {
       const tag = await tagService.create(data);
 

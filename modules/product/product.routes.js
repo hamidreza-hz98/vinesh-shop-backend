@@ -1,18 +1,52 @@
-const express = require("express")
-const { productController } = require("./product.controller")
-const { productSchema } = require("./product.validation")
-const validate = require("../../middlewares/validate")
+const express = require("express");
+const { productController } = require("./product.controller");
+const { productSchema } = require("./product.validation");
+const validate = require("../../middlewares/validate");
 
-const router = express.Router()
+const {
+  authenticate,
+  allowRoles,
+  requireUser,
+  allowUserOrAdmin,
+} = require("../../middlewares/auth");
 
-router.post("/", validate(productSchema.create), productController.create);
+const router = express.Router();
 
-router.get("/all", productController.getAll);
+router.post(
+  "/",
+  authenticate,
+  allowRoles("admin", "superadmin"),
+  validate(productSchema.create),
+  productController.create
+);
 
-router.get("/details", productController.getDetails)
+router.get(
+  "/all",
+  authenticate,
+  allowRoles("user", "admin", "superadmin"),
+  productController.getAll
+);
 
-router.post("/:id", validate(productSchema.update), productController.update);
+router.get(
+  "/details",
+  authenticate,
+  allowRoles("user", "admin", "superadmin"),
+  productController.getDetails
+);
 
-router.delete("/:id", productController.delete)
+router.post(
+  "/:id",
+  authenticate,
+  allowRoles("admin", "superadmin"),
+  validate(productSchema.update),
+  productController.update
+);
 
-module.exports = router
+router.delete(
+  "/:id",
+  authenticate,
+  allowRoles("admin", "superadmin"),
+  productController.delete
+);
+
+module.exports = router;

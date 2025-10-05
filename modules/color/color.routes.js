@@ -3,14 +3,38 @@ const { colorController } = require("./color.controller");
 const { colorSchema } = require("./color.validation");
 const validate = require("../../middlewares/validate");
 
+const {
+  authenticate,
+  allowRoles,
+  requireUser,
+  allowUserOrAdmin,
+} = require("../../middlewares/auth");
+
 const router = express.Router();
 
-router.post("/", validate(colorSchema.create), colorController.create);
+router.post(
+  "/",
+  authenticate,
+  allowRoles("admin"),
+  validate(colorSchema.create),
+  colorController.create
+);
 
 router.get("/all", colorController.getAll);
 
-router.post("/:id", validate(colorSchema.update), colorController.update);
+router.post(
+  "/:id",
+  authenticate,
+  allowRoles("admin"),
+  validate(colorSchema.update),
+  colorController.update
+);
 
-router.delete("/:id", colorController.delete);
+router.delete(
+  "/:id",
+  authenticate,
+  allowRoles("admin"),
+  colorController.delete
+);
 
 module.exports = router;

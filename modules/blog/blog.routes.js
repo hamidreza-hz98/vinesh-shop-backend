@@ -1,18 +1,37 @@
-const express = require("express")
-const { blogController } = require("./blog.controller")
-const { blogSchema } = require("./blog.validation")
-const validate = require("../../middlewares/validate")
+const express = require("express");
+const { blogController } = require("./blog.controller");
+const { blogSchema } = require("./blog.validation");
+const validate = require("../../middlewares/validate");
 
-const router = express.Router()
+const {
+  authenticate,
+  allowRoles,
+  requireUser,
+  allowUserOrAdmin,
+} = require("../../middlewares/auth");
 
-router.post("/", validate(blogSchema.create), blogController.create);
+const router = express.Router();
+
+router.post(
+  "/",
+  authenticate,
+  allowRoles("admin"),
+  validate(blogSchema.create),
+  blogController.create
+);
 
 router.get("/all", blogController.getAll);
 
-router.get("/details", blogController.getDetails)
+router.get("/details", blogController.getDetails);
 
-router.post("/:id", validate(blogSchema.update), blogController.update);
+router.post(
+  "/:id",
+  authenticate,
+  allowRoles("admin"),
+  validate(blogSchema.update),
+  blogController.update
+);
 
-router.delete("/:id", blogController.delete)
+router.delete("/:id", authenticate, allowRoles("admin"), blogController.delete);
 
-module.exports = router
+module.exports = router;

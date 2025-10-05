@@ -3,15 +3,39 @@ const { brandController } = require("./brand.controller");
 const { brandSchema } = require("./brand.validation");
 const validate = require("../../middlewares/validate");
 
+const {
+  authenticate,
+  allowRoles,
+  requireUser,
+  allowUserOrAdmin,
+} = require("../../middlewares/auth");
+
 const router = express.Router();
 
-router.post("/", validate(brandSchema.create), brandController.create);
+router.post(
+  "/",
+  authenticate,
+  allowRoles("admin"),
+  validate(brandSchema.create),
+  brandController.create
+);
 
 router.get("/all", brandController.getAll);
 
 router.get("/details", brandController.getDetails);
 
-router.post("/:id", validate(brandSchema.update), brandController.update);
+router.post(
+  "/:id",
+  authenticate,
+  allowRoles("admin"),
+  validate(brandSchema.update),
+  brandController.update
+);
 
-router.delete("/:id", brandController.delete);
+router.delete(
+  "/:id",
+  authenticate,
+  allowRoles("admin"),
+  brandController.delete
+);
 module.exports = router;

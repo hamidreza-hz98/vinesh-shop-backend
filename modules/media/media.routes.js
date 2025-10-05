@@ -6,6 +6,13 @@ const { mediaController } = require("./media.controller");
 const { mediaSchema } = require("./media.validation");
 const validate = require("../../middlewares/validate");
 
+const {
+  authenticate,
+  allowRoles,
+  requireUser,
+  allowUserOrAdmin,
+} = require("../../middlewares/auth");
+
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -32,6 +39,8 @@ const upload = multer({ storage });
 
 router.post(
   "/upload",
+  authenticate,
+  allowRoles("user", "admin", "superadmin"),
   upload.single("file"),
   validate(mediaSchema.upload),
   mediaController.upload
@@ -43,10 +52,26 @@ router.get(
   mediaController.getDetails
 );
 
-router.get("/all", mediaController.getAll);
+router.get(
+  "/all",
+  authenticate,
+  allowRoles("admin", "superadmin"),
+  mediaController.getAll
+);
 
-router.delete("/:id", mediaController.delete);
+router.delete(
+  "/:id",
+  authenticate,
+  allowRoles("admin", "superadmin"),
+  mediaController.delete
+);
 
-router.post("/:id", validate(mediaSchema.update), mediaController.update);
+router.post(
+  "/:id",
+  authenticate,
+  allowRoles("admin", "superadmin"),
+  validate(mediaSchema.update),
+  mediaController.update
+);
 
 module.exports = router;

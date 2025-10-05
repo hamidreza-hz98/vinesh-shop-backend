@@ -13,6 +13,7 @@ const objectId = Joi.string().custom((value, helpers) => {
 const translationSchema = Joi.object({
   lang: Joi.string().trim().min(2).max(10).required(),
   name: Joi.string().trim().min(1).max(100).required(),
+  slug: Joi.string().trim().min(1).max(100).required(),
 });
 
 // Tag schema

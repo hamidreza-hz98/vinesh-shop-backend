@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const throwError = require("../../middlewares/throw-error");
 const Admin = require("../../models/Admin");
 const { buildQuery } = require("../../lib/filter");
+const { generateToken } = require("../../lib/token");
 
 const adminService = {
   async exists(filter) {
@@ -91,11 +92,11 @@ const adminService = {
       throwError("Invalid credentials", 401);
     }
 
-    const token = jwt.sign(
-      { _id: existing._id, role: existing.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "30d" }
-    );
+    const token =  generateToken({
+      id: existing._id,
+      type: "admin",
+      role: existing.role,
+    });
 
     const { password: _, ...adminData } = existing.toObject();
 

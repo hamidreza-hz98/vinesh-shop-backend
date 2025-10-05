@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const throwError = require("../../middlewares/throw-error");
 const User = require("../../models/User");
 const { buildQuery } = require("../../lib/filter");
+const { generateToken } = require("../../lib/token");
 
 const userService = {
   async exists(filter) {
@@ -88,11 +89,10 @@ const userService = {
 
     const user = await this.create(data);
 
-    const token = jwt.sign(
-      { _id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "30d" }
-    );
+    const token = generateToken({
+      id: user._id,
+      type: "user",
+    });
 
     const { password: _, ...userData } = user.toObject();
 
@@ -111,11 +111,10 @@ const userService = {
       throwError("Invalid credentials", 401);
     }
 
-    const token = jwt.sign(
-      { _id: existing._id, role: existing.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "30d" }
-    );
+    const token = generateToken({
+      id: existing._id,
+      type: "user",
+    });
 
     const { password: _, ...userData } = existing.toObject();
 
@@ -130,18 +129,22 @@ const userService = {
     if (!user) {
       throwError("User does not exist.", 404);
     }
-    
+
     const isMatch = await bcrypt.compare(oldPassword, user.password);
     if (!isMatch) {
       throwError("Old password is incorrect", 401);
     }
-    
-    const isSame = oldPassword === newPassword
-    if(isSame){
+
+    const isSame = oldPassword === newPassword;
+    if (isSame) {
       throwError("Choose a new password", 401);
     }
 
-    const updatedUser =  await User.findByIdAndUpdate(_id, {password: newPassword}, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(
+      _id,
+      { password: newPassword },
+      { new: true }
+    );
 
     const { password: _, ...userData } = updatedUser.toObject();
 
