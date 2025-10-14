@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const timestamps = require("mongoose-timestamp");
 
-const TranslationSchema = new Schema({
-    lang: { type: String, required: true, trim: true, lowercase: true },
+const TranslationSchema = new Schema(
+  {
+    lang: { type: String, required: true, trim: true },
     title: { type: String, trim: true },
     description: { type: String, trim: true },
-    slug: { type: String, trim: true, lowercase: true, index: true },
 
     seoTitle: { type: String, trim: true },
     seoDescription: { type: String, trim: true },
-    seoKeywords: [{ type: String, trim: true }],
+    seoKeywords: { type: String, trim: true },
 
     mediaAlt: { type: String, trim: true },
     mediaTitle: { type: String, trim: true },
@@ -22,14 +22,14 @@ const TranslationSchema = new Schema({
 
 TranslationSchema.index({ lang: 1 }, { unique: true });
 
-const MediaSchema = new Schema({
+const MediaSchema = new Schema(
+  {
     filename: { type: String, required: true, trim: true },
+    path: { type: String, trim: true },
     originalName: { type: String, trim: true },
     extension: { type: String, trim: true },
     mimeType: { type: String, required: true },
     size: { type: Number, required: true },
-
-    path: { type: String, required: true, trim: true, index: true },
 
     type: {
       type: String,
@@ -39,16 +39,42 @@ const MediaSchema = new Schema({
     },
 
     translations: { type: [TranslationSchema], required: true },
-
     uploadedBy: { type: Schema.Types.ObjectId, ref: "Admin" },
-  }
+  },
 );
 
-MediaSchema.plugin(timestamps);
+MediaSchema.pre("save", function (next) {
+  if (this.isModified("filename") || !this.path) {
+    this.path = `/uploads/${this.filename}`;
+  }
+  next();
+});
 
-MediaSchema.index({ type: 1, createdAt: -1 });
-MediaSchema.index({ path: 1, filename: 1 }, { unique: true });
-MediaSchema.index({ "translations.lang": 1, "translations.slug": 1 });
-MediaSchema.index({ "translations.seoKeywords": 1 });
+MediaSchema.pre("findOneAndUpdate", function (next) {
+  const update = this.getUpdate();
+
+  const filename =
+    update.filename ||
+    (update.$set && update.$set.filename);
+
+  const path =
+    update.path ||
+    (update.$set && update.$set.path);
+
+  if (filename && !path) {
+    const newPath = `/uploads/${filename}`;
+
+    if (update.$set) {
+      update.$set.path = newPath;
+    } else {
+      update.path = newPath;
+    }
+  }
+
+  next();
+});
+
+
+MediaSchema.plugin(timestamps);
 
 module.exports = mongoose.model("Media", MediaSchema);

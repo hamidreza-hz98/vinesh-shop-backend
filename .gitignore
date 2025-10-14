@@ -29,3 +29,6 @@ Thumbs.db
 # Editor folders
 .vscode/
 .idea/
+
+# Ignore uploaded media files
+public/uploads/

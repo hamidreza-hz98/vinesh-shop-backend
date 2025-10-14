@@ -15,7 +15,7 @@ const translationSchema = Joi.object({
   slug: Joi.string().lowercase().allow("", null),
   seoTitle: Joi.string().allow("", null),
   seoDescription: Joi.string().allow("", null),
-  seoKeywords: Joi.array().items(Joi.string()),
+  seoKeywords: Joi.string().allow("", null),
   mediaAlt: Joi.string().allow("", null),
   mediaTitle: Joi.string().allow("", null),
   mediaCaption: Joi.string().allow("", null),
@@ -24,13 +24,11 @@ const translationSchema = Joi.object({
 
 const mediaSchema = {
   upload: Joi.object({
-    path: Joi.string().required(),
     type: Joi.string().valid("image", "video", "file", "icon", "audio").required(),
     translations: Joi.array().items(translationSchema),
   }),
 
   update: Joi.object({
-    path: Joi.string(),
     type: Joi.string().valid("image", "video", "file", "icon", "audio"),
     translations: Joi.array().items(translationSchema),
   }),

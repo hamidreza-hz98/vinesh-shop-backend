@@ -8,7 +8,7 @@ const mediaService = {
     return await Media.findOne(filter);
   },
 
-  async upload(file, data) {
+  async upload({ file, translations, type, uploadedBy, isPublic }) {
     if (!file) {
       throwError("File is required", 400);
     }
@@ -19,9 +19,10 @@ const mediaService = {
       extension: path.extname(file.originalname).replace(".", ""),
       mimeType: file.mimetype,
       size: file.size,
-      type: data.type,
-      translations: data.translations || [],
-      uploadedBy: data.uploadedBy,
+      type: type,
+      translations: translations || [],
+      uploadedBy: uploadedBy,
+      isPublic: isPublic || false,
     });
 
     return await media.save();
@@ -33,7 +34,23 @@ const mediaService = {
       throwError("Media does not exist.", 404);
     }
 
-    return await Media.findByIdAndUpdate(_id, data, { new: true });
+    const updatedMedia = await Media.findByIdAndUpdate(
+      _id,
+      {
+        filename: data.file.filename,
+        originalName: data.file.originalname,
+        extension: path.extname(data.file.originalname).replace(".", ""),
+        mimeType: data.file.mimetype,
+        size: data.file.size,
+        type: data.type,
+        translations: data.translations || [],
+        uploadedBy: data.uploadedBy,
+        isPublic: data.isPublic || false,
+      },
+      { new: true }
+    );
+
+    return updatedMedia;
   },
 
   async getDetails(filter) {
@@ -44,7 +61,12 @@ const mediaService = {
     return existing;
   },
 
-  async getAll({ filter = {}, sort = "-createdAt", page = 1, page_size = 10 }) {
+  async getAll({
+    filter = {},
+    sort = "createdAt: -1",
+    page = 1,
+    page_size = 1000,
+  }) {
     const skip = (page - 1) * page_size;
 
     const [items, total] = await Promise.all([

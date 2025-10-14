@@ -17,7 +17,7 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const dir = path.join(__dirname, "..", "..", "..", "public", "uploads");
+    const dir = path.join(process.cwd(), "public", "uploads");
 
     try {
       fs.mkdirSync(dir, { recursive: true });
@@ -35,12 +35,13 @@ const storage = multer.diskStorage({
   },
 });
 
+
 const upload = multer({ storage });
 
 router.post(
   "/upload",
   authenticate,
-  allowRoles("user", "admin", "superadmin"),
+  allowRoles("superadmin"),
   upload.single("file"),
   validate(mediaSchema.upload),
   mediaController.upload
@@ -70,6 +71,7 @@ router.post(
   "/:id",
   authenticate,
   allowRoles("admin", "superadmin"),
+  upload.single("file"),
   validate(mediaSchema.update),
   mediaController.update
 );

@@ -2,8 +2,10 @@ const { mediaService } = require("./media.service");
 
 const mediaController = {
   async upload(req, res) {
+    const { file, body } = req;
+
     try {
-      const media = await mediaService.upload(req.file, req.body);
+      const media = await mediaService.upload({ file, ...body });
 
       res.success({
         message: `Media uploaded successfully.`,
@@ -15,8 +17,11 @@ const mediaController = {
   },
 
   async update(req, res) {
+    const _id = req.params.id
+    const {file, body} = req;
+
     try {
-      const media = await mediaService.update(req.params.id, req.body);
+      const media = await mediaService.update(_id, {file, ...body});
 
       res.success({
         message: "Media updated successfully.",
@@ -38,11 +43,13 @@ const mediaController = {
   },
 
   async getAll(req, res) {
+    const query = req.query;
+
     try {
-      const { items, total } = await mediaService.getAll(req.query);
+      const { items, total } = await mediaService.getAll(query);
 
       res.success({
-        data: { items, total, ...req.query },
+        data: { items, total, ...query },
       });
     } catch (error) {
       res.error({ message: error.message, code: error.statusCode });
