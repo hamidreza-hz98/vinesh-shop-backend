@@ -55,7 +55,7 @@ router.post("/", authenticate, allowRoles("superadmin") ,validate(tagSchema.crea
 
 router.get("/all", tagController.getAll);
 
-router.post("/:id", authenticate, allowRoles("superadmin") ,validate(tagSchema.update), tagController.update);
+router.put("/:id", authenticate, allowRoles("superadmin") ,validate(tagSchema.update), tagController.update);
 
 router.delete("/:id", authenticate, allowRoles("superadmin") ,tagController.delete);
 

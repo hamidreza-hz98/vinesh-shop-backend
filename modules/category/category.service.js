@@ -5,7 +5,7 @@ const { buildQuery } = require("../../lib/filter");
 const categoryService = {
   async exists(filter) {
     return await Category.findOne(filter)
-      .populate("tags subCategories image icon banners")
+      .populate("tags translations subCategories image icon")
       .lean();
   },
 
@@ -19,15 +19,12 @@ const categoryService = {
       throwError("Category already exists.");
     }
 
-    const category = new Category({data});
+    const category = new Category(data);
     return await category.save();
   },
 
   async update(_id, data) {
-    const translation = data.translations.find((item) => item.lang === "us");
-    const existing = await this.exists({
-      "translations.slug": translation.slug,
-    });
+    const existing = await this.exists({_id});
 
     if (!existing) {
       throwError("Category does not exist.", 404);
@@ -54,16 +51,33 @@ const categoryService = {
         "translations.slug",
         "translations.excerpt",
         "translations.description",
+        "subcategories.translations.name",
+        "tags.translations.name",
       ],
       sort,
       page,
       page_size,
     });
 
+    if (criteria.subCategories) {
+      let val = criteria.subCategories;
+
+      if (typeof val === "object" && val.$regex) {
+        val = String(val.$regex);
+      }
+
+      criteria["subcategories.translations.name"] = {
+        $regex: val,
+        $options: "i",
+      };
+      delete criteria.subCategories;
+    }
+
     const skip = (page - 1) * page_size;
 
     let [categories, total] = await Promise.all([
       Category.find(criteria)
+        .populate("image subCategories")
         .sort(sortOptions)
         .skip(skip)
         .limit(page_size)
@@ -115,9 +129,8 @@ const categoryService = {
           "filename originalName extension mimeType size path type translations",
       })
       .populate({
-        path: "banners",
-        select:
-          "filename originalName extension mimeType size path type translations",
+        path: "translations.banners",
+        model: "Media",
       })
       .lean();
 
@@ -165,7 +178,6 @@ const categoryService = {
 
     category.image = filterMedia(category.image);
     category.icon = filterMedia(category.icon);
-    category.banners = filterMedia(category.banners);
 
     return category;
   },

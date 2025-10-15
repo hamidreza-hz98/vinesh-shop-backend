@@ -24,7 +24,7 @@ router.get("/all", categoryController.getAll);
 
 router.get("/details", categoryController.getDetails);
 
-router.post(
+router.put(
   "/:id",
   authenticate,
   allowRoles("admin", "superadmin"),

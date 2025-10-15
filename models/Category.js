@@ -26,6 +26,13 @@ const TranslationSchema = new Schema({
     type: String,
     required: true,
   },
+  banners: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Media",
+      default: null,
+    },
+  ],
   seo: {
     type: SeoSchema,
     default: () => ({}),
@@ -36,20 +43,13 @@ const CategorySchema = new Schema({
   image: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Media",
-    default: null
+    default: null,
   },
   icon: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Media",
-    default: null
+    default: null,
   },
-  banners: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Media",
-      default: null
-    },
-  ],
   subCategories: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -70,7 +70,7 @@ const CategorySchema = new Schema({
   },
   isSubCategory: {
     type: Boolean,
-    default: false
+    default: false,
   },
   visits: {
     type: Number,
@@ -83,7 +83,6 @@ const CategorySchema = new Schema({
 });
 
 CategorySchema.plugin(timestamps);
-
 
 CategorySchema.index(
   { isActive: 1 },

@@ -21,6 +21,7 @@ const translationSchema = Joi.object({
   lang: Joi.string().trim().min(2).max(10).required(),
   name: Joi.string().trim().min(1).max(100).required(),
   slug: Joi.string().trim().min(1).max(150).required(),
+  banners: Joi.array().items(objectId).default([]),
   excerpt: Joi.string().trim().min(1).max(500).required(),
   description: Joi.string().trim().min(1).required(),
   seo: seoSchema.optional(),
@@ -31,7 +32,6 @@ const categorySchema = {
   create: Joi.object({
     image: objectId.allow(null),
     icon: objectId.allow(null),
-    banners: Joi.array().items(objectId).default([]),
     subCategories: Joi.array().items(objectId).default([]),
     tags: Joi.array().items(objectId).default([]),
     isActive: Joi.boolean().default(false),
@@ -42,7 +42,6 @@ const categorySchema = {
   update: Joi.object({
     image: objectId.allow(null),
     icon: objectId.allow(null),
-    banners: Joi.array().items(objectId),
     subCategories: Joi.array().items(objectId),
     tags: Joi.array().items(objectId),
     isActive: Joi.boolean(),

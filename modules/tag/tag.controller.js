@@ -39,11 +39,13 @@ const tagController = {
   },
 
   async getAll(req, res) {
+    const queries = req.query;
+
     try {
-      const {tags, total} = await tagService.getAll();
+      const {tags, total} = await tagService.getAll(queries);
 
       res.success({
-        data: {tags, total},
+        data: {tags, total, ...queries},
       });
     } catch (error) {
       res.error({
