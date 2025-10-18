@@ -23,7 +23,7 @@ const userController = {
     const _id = req.params.id;
 
     try {
-      const user = await userService.update(_id, data);
+      const { user } = await userService.update(_id, data);
 
       res.success({
         message: `User ${user.firstName} ${user.lastName} updated successfully.`,

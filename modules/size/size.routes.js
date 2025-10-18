@@ -16,7 +16,7 @@ router.post("/", authenticate, allowRoles("admin"), validate(sizeSchema.create),
 
 router.get("/all", sizeController.getAll);
 
-router.post("/:id", authenticate, allowRoles("admin"), validate(sizeSchema.update), sizeController.update);
+router.put("/:id", authenticate, allowRoles("admin"), validate(sizeSchema.update), sizeController.update);
 
 router.delete("/:id", authenticate, allowRoles("admin"), sizeController.delete);
 

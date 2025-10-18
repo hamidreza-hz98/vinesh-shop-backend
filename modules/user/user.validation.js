@@ -37,7 +37,6 @@ const userSchema = {
           "Phone number must be 10–15 digits, and may optionally start with +.",
       }),
     email: Joi.string().email(),
-    password: Joi.string().min(6).max(128),
     shebaNumber: Joi.string().length(24).allow("", null),
     birthdate: Joi.date().iso().less("now"),
     cart: objectId,

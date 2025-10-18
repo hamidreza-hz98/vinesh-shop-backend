@@ -22,7 +22,7 @@ const brandService = {
   },
 
   async update(_id, data) {
-    const existing = await this.exists({_id});
+    const existing = await this.exists({ _id });
 
     if (!existing) {
       throwError("Brand does not exist.", 404);
@@ -58,18 +58,64 @@ const brandService = {
     const skip = (page - 1) * page_size;
 
     let [brands, total] = await Promise.all([
-      Brand.find(criteria).sort(sortOptions).skip(skip).limit(page_size).lean(),
+      Brand.find(criteria)
+        .populate({
+          path: "tags",
+          select: "translations",
+        })
+        .populate({
+          path: "categories",
+          select: "translations",
+        })
+        .populate({
+          path: "image",
+          select:
+            "filename originalName extension mimeType size path type translations",
+        })
+        .sort(sortOptions)
+        .skip(skip)
+        .limit(page_size)
+        .lean(),
       Brand.countDocuments(criteria),
     ]);
 
     if (lang) {
       brands = brands.map((b) => {
-        const translation = b.translations.find((t) => t.lang === lang) || {};
+        // flatten brand translation
+        const brandTranslation =
+          b.translations?.find((t) => t.lang === lang) || {};
+
+        // flatten categories
+        const categories =
+          b.categories?.map((cat) => {
+            const catTrans =
+              cat.translations?.find((t) => t.lang === lang) || {};
+            return { ...cat, ...catTrans, translations: undefined };
+          }) || [];
+
+        // flatten tags
+        const tags =
+          b.tags?.map((tag) => {
+            const tagTrans =
+              tag.translations?.find((t) => t.lang === lang) || {};
+            return { ...tag, ...tagTrans, translations: undefined };
+          }) || [];
+
+        // flatten image translation
+        let image = b.image;
+        if (image) {
+          const imgTrans =
+            image.translations?.find((t) => t.lang === lang) || {};
+          image = { ...image, ...imgTrans, translations: undefined };
+        }
+
         return {
+          ...brandTranslation,
+          image,
           ...b,
-          ...translation,
+          categories,
+          tags,
           translations: undefined,
-          _id: b._id,
         };
       });
     }

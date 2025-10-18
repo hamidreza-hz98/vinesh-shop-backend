@@ -17,10 +17,10 @@ const translationSchema = Joi.object({
 
 // Dimensions schema
 const dimensionsSchema = Joi.object({
-  width: Joi.string().trim().allow("", null),
-  height: Joi.string().trim().allow("", null),
-  depth: Joi.string().trim().allow("", null),
-  weight: Joi.string().trim().allow("", null),
+  width: Joi.required(),
+  height: Joi.required(),
+  depth: Joi.required(),
+  weight: Joi.required(),
 });
 
 // Size schema

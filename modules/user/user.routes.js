@@ -41,7 +41,7 @@ router.delete(
   userController.delete
 );
 
-router.post(
+router.put(
   "/:id",
   authenticate,
   allowRoles("superadmin", "user"),

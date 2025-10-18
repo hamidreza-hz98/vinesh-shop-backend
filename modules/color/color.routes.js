@@ -22,7 +22,7 @@ router.post(
 
 router.get("/all", colorController.getAll);
 
-router.post(
+router.put(
   "/:id",
   authenticate,
   allowRoles("admin"),

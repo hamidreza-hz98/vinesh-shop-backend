@@ -24,7 +24,7 @@ router.get("/all", brandController.getAll);
 
 router.get("/details", brandController.getDetails);
 
-router.post(
+router.put(
   "/:id",
   authenticate,
   allowRoles("admin"),
